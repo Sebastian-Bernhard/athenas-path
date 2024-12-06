@@ -1,0 +1,32 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+	"name": "Haskell",
+	// More info: https://containers.dev/guide/dockerfile
+	"build": {
+		// Path is relative to the devcontainer.json file.
+		"dockerfile": "Dockerfile"
+	},
+	// Volume mounts for persistence and better performance
+	"mounts": [
+		// Unique .stack-work cache for this devcontainer
+		"source=stack-work-${devcontainerId},target=${containerWorkspaceFolder}/.stack-work,type=volume",
+		// Shared stack and ghcup cache for all devcontainers
+		"source=stack-cache,target=/root/.stack,type=volume",
+		"source=ghcup-cache,target=/root/.ghcup,type=volume"
+	],
+	"workspaceMount": "source=${localWorkspaceFolder},target=/work,type=bind,consistency=cached",
+	"workspaceFolder": "/work",
+	"features": {
+		// Allows to use docker inside the devcontainer
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"haskell.haskell"
+			]
+		}
+	},
+	"remoteUser": "root"
+}
