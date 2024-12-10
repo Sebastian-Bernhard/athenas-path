@@ -1,6 +1,10 @@
-module Lib
-    ( someFunc
-    ) where
+module Lib where
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+type Alphabet = [Char]
+
+lowerAlphabet :: Alphabet
+lowerAlphabet = ['a' .. 'z']
+upperAlphabet :: Alphabet
+upperAlphabet = ['A' .. 'Z']
+digits :: Alphabet
+digits = ['0' .. '9']
