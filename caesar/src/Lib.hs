@@ -17,3 +17,15 @@ isDigit :: Char -> Bool
 isDigit char = char `elem` digits
 isMisc :: Char -> Bool
 isMisc char = char `notElem` lowerAlphabet ++ upperAlphabet ++ digits
+
+listLengh [] = 0
+listLengh (x : xs) = 1 + listLengh xs
+
+indexOf :: Char -> Alphabet -> Int
+indexOf ch [] = undefined
+indexOf ch (x : xs) = if x == ch then 0 else 1 + indexOf ch xs
+
+upperRot :: Int -> Char -> Char
+upperRot n ch = upperAlphabet !! ((indexOf ch upperAlphabet + n) `mod` 26)
+lowerRot :: Int -> Char -> Char
+lowerRot n ch = lowerAlphabet !! ((indexOf ch lowerAlphabet + n) `mod` 26)
