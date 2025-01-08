@@ -1,5 +1,8 @@
 module Lib where
 
+import Data.Char (toLower)
+import Data.List (sortBy)
+
 type Alphabet = [Char]
 
 lowerAlphabet :: Alphabet
@@ -40,14 +43,18 @@ index1 (x : xs) n =
         then x
         else index1 xs (n - 1)
 
-upperRot :: Int -> Char -> Char
-upperRot n ch = upperAlphabet !! ((indexOf ch upperAlphabet + n) `mod` 26)
-lowerRot :: Int -> Char -> Char
-lowerRot n ch = lowerAlphabet !! ((indexOf ch lowerAlphabet + n) `mod` 26)
-
+-- Defines a general rotation on an arbitrary alphabet
 alphabetRot :: Alphabet -> Int -> Char -> Char
 alphabetRot alphabet n ch =
   alphabet !! ((indexOf ch alphabet + n) `mod` length alphabet)
+
+-- Defines a rotation function for uppercase letters
+upperRot :: Int -> Char -> Char
+upperRot n ch = alphabetRot upperAlphabet n ch
+
+-- Defines a rotation function for lowercase letters
+lowerRot :: Int -> Char -> Char
+lowerRot n ch = alphabetRot lowerAlphabet n ch
 
 rotChar :: Int -> Char -> Char
 rotChar n ch
@@ -60,3 +67,20 @@ caesar n message = map (\ch -> rotChar n ch) message
 
 rot13 :: String -> String
 rot13 message = caesar 13 message
+
+count :: Char -> String -> Int
+count element [] = 0
+count element (x : xs)
+  | x == element = 1 + count element xs
+  | otherwise = count element xs
+
+frequencyStats :: [Char] -> [(Char, Int)]
+frequencyStats xs =
+  let input = map toLower xs
+      freqs =
+        map (\element -> (element, count element input)) lowerAlphabet
+   in
+      sortBy (\(_, x) (_, y) -> compare y x) freqs
+
+loremIpsum :: String
+loremIpsum = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
