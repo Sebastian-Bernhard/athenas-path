@@ -25,14 +25,24 @@ listLengh [] = 0
 listLengh (x : xs) = 1 + listLengh xs
 
 -- return the index of a given char in a given list
+{-
 indexOf :: Char -> Alphabet -> Int
 indexOf ch [] = undefined
 indexOf ch (x : xs) = 
     if x == ch 
         then 0 
         else 1 + indexOf ch xs
+-}
+
+indexOf :: Char -> [Char] -> Maybe Int
+indexOf _ [] = Nothing
+indexOf ch (x : xs) =
+  if x == ch
+    then Just 0
+    else fmap (+1) (indexOf ch xs)
 
 -- return a element by its index, !!
+{-
 index1 :: [a] -> Int -> a
 index1 [] _ = undefined
 index1 (x : xs) n =
@@ -42,11 +52,23 @@ index1 (x : xs) n =
       if n == 0
         then x
         else index1 xs (n - 1)
+-}
+
+index1 :: [a] -> Int -> a
+index1 [] _ = undefined
+index1 (x : xs) n
+  | n < 0 = undefined
+  | n == 0 = x
+  | otherwise = index1 xs (n - 1)
 
 -- Defines a general rotation on an arbitrary alphabet
 alphabetRot :: Alphabet -> Int -> Char -> Char
 alphabetRot alphabet n ch =
-  alphabet !! ((indexOf ch alphabet + n) `mod` length alphabet)
+  -- alphabet !! ((indexOf ch alphabet + n) `mod` length alphabet)
+  -- using new indexOf function
+  case indexOf ch alphabet of
+    Just idx -> alphabet !! ((idx + n) `mod` length alphabet)
+    Nothing -> ch
 
 -- Defines a rotation function for uppercase letters
 upperRot :: Int -> Char -> Char
