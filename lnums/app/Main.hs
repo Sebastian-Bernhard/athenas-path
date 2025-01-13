@@ -1,5 +1,6 @@
 module Main (main) where
 
+import Lib
 import Data.Maybe
 import System.Environment
 
@@ -8,7 +9,5 @@ readLines filePath = do
     contents <- readFile filePath
     return (lines contents)
 
-type NumberedLines = [(Int, String)]
-
 main :: IO ()
-main = putStrLn "someFunc"
+main = putStrLn "Hello, Haskell!"
