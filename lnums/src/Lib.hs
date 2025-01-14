@@ -41,6 +41,7 @@ go line (x : xs) processes each character x in the remaining text xs.
 If x is a newline character ('\n'), it adds the current line to the result and starts a new line.
 Otherwise, it appends the character x to the current line and continues processing the remaining text.
 -}
+
 lines' :: String -> [String]
 lines' "" = []
 lines' text =
@@ -95,6 +96,14 @@ padLeft = pad PadLeft
 padRight :: Int -> String -> String
 padRight = pad PadRight
 
+prettyNumberedLines :: PadMode -> NumberedLines -> [String]
+prettyNumberedLines mode lineNums =
+    let (numbers, text) = unzip lineNums
+        numberStrings = map (maybe "" show) numbers
+        maxLength = maximum (map length numberStrings)
+        paddedNumbers = map (pad mode maxLength) numberStrings
+    in zipWith (\n l -> n ++ " " ++ l) paddedNumbers text
+
 zip' :: [a] -> [b] -> [(a, b)]
 zip' [] [] = []
 zip' _ [] = []
@@ -106,15 +115,6 @@ zipWith' _ [] [] = []
 zipWith' _ _ [] = []
 zipWith' _ [] _ = []
 zipWith' f (x : xs) (y : ys) = f x y : zipWith' f xs ys
-
-prettyNumberedLines :: PadMode -> NumberedLines -> [String]
-prettyNumberedLines mode lineNums =
-    let (numbers, text) = unzip lineNums
-        numberStrings = map (maybe "" show) numbers
-        maxLength = maximum (map length numberStrings)
-        paddedNumbers = map (pad mode maxLength) numberStrings
-    in zipWith (\n l -> n ++ " " ++ l) paddedNumbers text
-
 
 
 
